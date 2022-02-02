@@ -1,0 +1,41 @@
+# pre-job: get latest sdist/version(s), check bucket for missing artifacts
+# if missing, fan out to one worker per target OS
+# build as necessary
+# store artifacts on job
+# final dependent job uploads artifacts to bucket
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+stages:
+- stage: pre_flight
+  jobs:
+  - job: find_missing_artifacts
+    displayName: Find Missing Artifacts
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.9'
+    - script: |
+        python -m pip install -r requirements.txt
+        python gen_build_matrix.py
+      name: gen_matrix
+    - script: echo $(gen_matrix.matrix)
+- stage: wheel_builds
+  dependsOn: pre_flight
+  condition: stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix']
+  jobs:
+  - job: build
+    strategy:
+      matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
+    steps:
+    - script: |
+        echo "start instance $(instance)"
+- stage: publish
+  dependsOn: wheel_builds
+  jobs:
+  - job: upload_to_s3
+    steps:
+    - script: |
+        echo "fetch all pipelines artifacts, upload to S3"
+        echo "regen index"
