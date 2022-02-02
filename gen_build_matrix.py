@@ -103,8 +103,9 @@ def main():
     print('dumping top-level matrix to variable `matrix`')
     jobs = {job: dict(instance=job_def['instance']) for job, job_def in sorted(build_matrix.items())}
     print(f'##vso[task.setvariable variable=matrix;isOutput=true]{json.dumps(jobs)}')
-    for job, job_def in build_matrix.items():
-        print(f'##vso[task.setvariable variable={job};isOutput=true]{json.dumps(job_def)}')
+    if jobs:
+        # HACK: can't figure out a stage expression that can directly sample an empty matrix to skip the subsequent stages, so we need this extra var
+        print(f'##vso[task.setvariable variable=matrix_has_jobs;isOutput=true]true')
 
 
 if __name__ == '__main__':

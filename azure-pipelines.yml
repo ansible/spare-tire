@@ -23,7 +23,7 @@ stages:
     - script: echo $(gen_matrix.matrix)
 - stage: wheel_builds
   dependsOn: pre_flight
-  condition: stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix']
+  condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
   jobs:
   - job: build
     strategy:
