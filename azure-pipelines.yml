@@ -29,10 +29,25 @@ stages:
     strategy:
       matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
     steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.9'
     - script: |
-        echo "install ansible-core"
-        echo "run ansible-test integration --remote $(instance)"
-        echo "pipe jobdata to python wheel builder: $(jobdata)"
+        set -eux
+        echo "##[group]install ansible-core"
+        pip install ansible-core
+        echo "##[endgroup]"
+        
+        echo "write jobdata for wheel builder task: $JOB_DATA"
+        
+        echo "##[group]run ansible-test integration --remote $(instance)"
+        # ansible-test integration --remote $(instance)
+        echo "##[endgroup]"
+
+        echo 'junkdata' > '$(Build.ArtifactStagingDirectory)/abc_def.whl'
+    - publish: '$(Build.ArtifactStagingDirectory)/*.whl'
+      artifact: wheel
+
 - stage: publish
   dependsOn: wheel_builds
   jobs:
