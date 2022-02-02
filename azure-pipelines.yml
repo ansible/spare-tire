@@ -30,7 +30,9 @@ stages:
       matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
     steps:
     - script: |
-        echo "start instance $(instance)"
+        echo "install ansible-core"
+        echo "run ansible-test integration --remote $(instance)"
+        echo "pipe jobdata to python wheel builder: $(jobdata)"
 - stage: publish
   dependsOn: wheel_builds
   jobs:

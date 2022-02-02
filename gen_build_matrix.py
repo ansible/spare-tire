@@ -65,15 +65,17 @@ class PackageBuildChecker:
         matrix = dict()
         # output matrix should be:
         # wheel_freebsd/12.2:
-        #   instance: freebsd/12.2
-        #   packages:
+        #   job_data:
+        #     instance: freebsd/12.2
+        #     packages:
         #     - name: cryptography
         #       version: 36.0.1
         #       python: cp38
         #       abi: abi3
         # wheel_freebsd/13.0:
-        #   instance: freebsd/13.0
-        #   packages:
+        #   job_data:
+        #     instance: freebsd/13.0
+        #     packages:
         #     - name: cryptography
         #       version: 36.0.1
         #       python: cp38
@@ -81,15 +83,22 @@ class PackageBuildChecker:
 
         for missing_build in missing:
             job_name = f'wheel_{missing_build.platform_tag}'
-            job_def = matrix.setdefault(job_name, {})
+            job_toplevel = matrix.setdefault(job_name, {})
+            job_toplevel['instance'] = missing_build.platform_instance
+            job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
-            # pkgs = job_def.setdefault('packages', [])
-            # pkgs.append(dict(
-            #     name=missing_build.package,
-            #     version=missing_build.version,
-            #     python=self._pytag_to_python(missing_build.python_tag),
-            #     abi=missing_build.abi_tag
-            # ))
+            pkgs = job_def.setdefault('packages', [])
+            pkgs.append(dict(
+                name=missing_build.package,
+                version=missing_build.version,
+                python=self._pytag_to_python(missing_build.python_tag),
+                abi=missing_build.abi_tag
+            ))
+
+        # HACK: azp barfs on > 2 levels of nesting, and only allows string values, so we have to smuggle JSON in a
+        # string key for the actual structured job data
+        for job_name, job in matrix.items():
+            job['job_data'] = json.dumps(job['job_data'])
 
         return matrix
 
