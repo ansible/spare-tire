@@ -100,6 +100,10 @@ class PackageBuildChecker:
         for job_name, job in matrix.items():
             job['job_data'] = json.dumps(job['job_data'])
 
+        matrix = dict(sorted(matrix.items()))
+
+        print(f'output matrix is now: {matrix}')
+
         return matrix
 
 
@@ -109,10 +113,9 @@ def main():
 
     pbc = PackageBuildChecker(pkg_matrix)
     build_matrix = pbc.build_matrix
-    print('dumping top-level matrix to variable `matrix`')
-    jobs = {job: dict(instance=job_def['instance']) for job, job_def in sorted(build_matrix.items())}
-    print(f'##vso[task.setvariable variable=matrix;isOutput=true]{json.dumps(jobs)}')
-    if jobs:
+    print('dumping build matrix to variable `matrix`')
+    print(f'##vso[task.setvariable variable=matrix;isOutput=true]{json.dumps(build_matrix)}')
+    if build_matrix:
         # HACK: can't figure out a stage expression that can directly sample an empty matrix to skip the subsequent stages, so we need this extra var
         print(f'##vso[task.setvariable variable=matrix_has_jobs;isOutput=true]true')
 

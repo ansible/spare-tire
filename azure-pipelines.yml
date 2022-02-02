@@ -21,6 +21,7 @@ stages:
         python gen_build_matrix.py
       name: gen_matrix
     - script: echo $(gen_matrix.matrix)
+      name: display_dynamic_matrix
 - stage: wheel_builds
   dependsOn: pre_flight
   condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
@@ -45,8 +46,10 @@ stages:
         echo "##[endgroup]"
 
         echo 'junkdata' > '$(Build.ArtifactStagingDirectory)/abc_def.whl'
+      name: build_wheels
     - publish: '$(Build.ArtifactStagingDirectory)/*.whl'
       artifact: wheel
+      name: store_wheels_as_pipeline_artifacts
 
 - stage: publish
   dependsOn: wheel_builds
@@ -56,3 +59,4 @@ stages:
     - script: |
         echo "fetch all pipelines artifacts, upload to S3"
         echo "regen index"
+      name: sync_to_bucket
