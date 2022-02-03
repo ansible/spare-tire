@@ -92,6 +92,7 @@ class PackageBuildChecker:
             job_name = f'wheel_{missing_build.platform_tag}'
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
+            job_toplevel['expected_output_filename'] = missing_build.filename
             job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
             pkgs = job_def.setdefault('packages', [])
@@ -101,7 +102,8 @@ class PackageBuildChecker:
                 python=self._pytag_to_python(missing_build.python_tag),
                 python_tag=missing_build.python_tag,
                 abi=missing_build.abi_tag,
-                sdist_url=missing_build.sdist_url
+                sdist_url=missing_build.sdist_url,
+                expected_output_filename=missing_build.filename,
             ))
 
         # HACK: azp barfs on > 2 levels of nesting, and only allows string values, so we have to smuggle JSON in a

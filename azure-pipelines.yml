@@ -42,7 +42,7 @@ stages:
         echo "##[group]install ansible-core"
         pip install ansible-core
         echo "##[endgroup]"
-        
+
         # HACK: this sucks
         echo "write jobdata for wheel builder task: $JOB_DATA"
         echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
@@ -51,14 +51,17 @@ stages:
         pushd collections/ansible_collections/ansible/spare_tire/
         # FIXME don't hardcode remote Python version 
         # FIXME add --remote-terminate always
-        ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
+        # ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
         popd
         echo "##[endgroup]"
 
-        cp dist/*.whl '$(Build.ArtifactStagingDirectory)'
+        mkdir -p $(Build.ArtifactStagingDirectory)/dist
+        echo junkdata > $(Build.ArtifactStagingDirectory)/dist/$(expected_output_filename)
+
+        ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
       name: build_wheels
-    - publish: '$(Build.ArtifactStagingDirectory)/*.whl'
-      artifact: wheel
+    - publish: '$(Build.ArtifactStagingDirectory)/dist/'
+      artifact: wheels
       name: store_wheels_as_pipeline_artifacts
 
 - stage: publish
