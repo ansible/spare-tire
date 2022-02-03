@@ -92,7 +92,6 @@ class PackageBuildChecker:
             job_name = f'wheel_{missing_build.platform_tag}'
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
-            job_toplevel['expected_output_filename'] = missing_build.filename
             job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
             pkgs = job_def.setdefault('packages', [])
