@@ -1,3 +1,4 @@
+import boto3
 import json
 import re
 import typing as t
@@ -14,6 +15,7 @@ class BuildSpec:
     python_tag: str
     abi_tag: t.Optional[str]
     platform_tag: str
+    sdist_url: str
 
     @property
     def filename(self):
@@ -25,7 +27,6 @@ class PackageBuildChecker:
     def __init__(self, pkg_matrix: dict):
         self._pkg_matrix = pkg_matrix
         self._missing_build_spec = dict()
-        self._find_missing()
 
     def _find_missing(self) -> set[BuildSpec]:
         pypi = QyPI('https://pypi.org/pypi')
@@ -43,14 +44,20 @@ class PackageBuildChecker:
                     for python_spec in pkg_build['python']:
                         python_tag = python_spec['tag']
                         abi_tag = python_spec.get('abi', '')
-                        spec = BuildSpec(pkg_name, version, platform_instance, python_tag, abi_tag, platform_tag)
+                        sdist_url = next(r for r in published_pkg['urls'] if r.get('packagetype') == 'sdist')['url']
+                        spec = BuildSpec(pkg_name, version, platform_instance, python_tag, abi_tag, platform_tag, sdist_url)
                         if not self._build_exists(spec):
                             missing.add(spec)
         return missing
 
     def _build_exists(self, spec: BuildSpec) -> bool:
-        print(f'would check for {spec.filename}')
-        return False
+        print(f"checking bucket for {spec.filename}")
+        s3 = boto3.client('s3')
+        s3_objects = s3.list_objects_v2(Bucket='spare-tire', Prefix=f'packages/{spec.filename}', MaxKeys=1)
+        exists = len(s3_objects.get('Contents', [])) > 0
+        if not exists:
+            print(f"{spec.filename} is not present in bucket")
+        return exists
 
     @staticmethod
     def _pytag_to_python(tag):
@@ -92,13 +99,16 @@ class PackageBuildChecker:
                 name=missing_build.package,
                 version=missing_build.version,
                 python=self._pytag_to_python(missing_build.python_tag),
-                abi=missing_build.abi_tag
+                python_tag=missing_build.python_tag,
+                abi=missing_build.abi_tag,
+                sdist_url=missing_build.sdist_url
             ))
 
         # HACK: azp barfs on > 2 levels of nesting, and only allows string values, so we have to smuggle JSON in a
         # string key for the actual structured job data
         for job_name, job in matrix.items():
             job['job_data'] = json.dumps(job['job_data'])
+            print(f'{job_name} data is {job["job_data"]}')
 
         matrix = dict(sorted(matrix.items()))
 

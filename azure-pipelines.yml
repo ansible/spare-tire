@@ -19,6 +19,10 @@ stages:
     - script: |
         python -m pip install -r requirements.txt
         python gen_build_matrix.py
+      env:
+        # map AWS secrets in for this step
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
       name: gen_matrix
     - script: echo $(gen_matrix.matrix)
       name: display_dynamic_matrix
@@ -39,13 +43,19 @@ stages:
         pip install ansible-core
         echo "##[endgroup]"
         
+        # HACK: this sucks
         echo "write jobdata for wheel builder task: $JOB_DATA"
-        
-        echo "##[group]run ansible-test integration --remote $(instance)"
-        # ansible-test integration --remote $(instance)
+        echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
+        echo "wheel_output_dir: $(pwd)/dist/" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
+        echo "##[group]run ansible-test against $(instance)"
+        pushd collections/ansible_collections/ansible/spare_tire/
+        # FIXME don't hardcode remote Python version 
+        # FIXME add --remote-terminate always
+        ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
+        popd
         echo "##[endgroup]"
 
-        echo 'junkdata' > '$(Build.ArtifactStagingDirectory)/abc_def.whl'
+        cp dist/*.whl '$(Build.ArtifactStagingDirectory)'
       name: build_wheels
     - publish: '$(Build.ArtifactStagingDirectory)/*.whl'
       artifact: wheel
