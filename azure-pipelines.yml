@@ -50,6 +50,9 @@ stages:
         
         # run generated remote build script
         . ./remote_build.sh
+        
+        mkdir -p $(Build.ArtifactStagingDirectory)/dist
+        cp dist/*.whl $(Build.ArtifactStagingDirectory)/dist
 
         ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
       name: build_wheels
