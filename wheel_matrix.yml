@@ -1,7 +1,7 @@
 packages:
   cryptography:
     versions:
-      '36.0.0':
+      latest:
         wheels:
         - platform_tag: freebsd_12_2_release_amd64
           platform_instance: freebsd/12.2
@@ -18,3 +18,20 @@ packages:
           python:
           - tag: cp38
             abi: abi3
+  cffi:
+    versions:
+      latest:
+        wheels:
+        - platform_tag: freebsd_12_2_release_amd64
+          platform_instance: freebsd/12.2
+          python:
+          - tag: cp38
+        - platform_tag: freebsd_12_3_release_amd64
+          platform_instance: freebsd/12.3
+          python:
+          - tag: cp38
+        - platform_tag: freebsd_13_0_release_amd64
+          platform_instance: freebsd/13.0
+          python:
+          - tag: cp38
+
