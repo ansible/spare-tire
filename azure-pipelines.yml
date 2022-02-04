@@ -2,92 +2,85 @@ pool:
   vmImage: 'ubuntu-20.04'
 
 stages:
-#- stage: pre_flight
-#  jobs:
-#  - job: find_missing_artifacts
-#    displayName: Find Missing Artifacts
-#    steps:
-#    - task: UsePythonVersion@0
-#      inputs:
-#        versionSpec: '3.9'
-#    - script: |
-#        python -m pip install -r requirements.txt
-#        python gen_build_matrix.py
-#      env:
-#        # map AWS secrets in for this step
-#        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-#        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
-#      name: gen_matrix
-#    - script: echo $(gen_matrix.matrix)
-#      name: display_dynamic_matrix
-#- stage: wheel_builds
-#  dependsOn: pre_flight
-#  condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
-#  jobs:
-#  - job: build
-#    strategy:
-#      matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
-#    steps:
-#    - task: UsePythonVersion@0
-#      inputs:
-#        versionSpec: '3.9'
-#    - script: |
-#        set -eux
-#        echo "##[group]install ansible-core"
-#        pip install ansible-core
-#        echo "##[endgroup]"
-#
-#        # HACK: this sucks
-#        echo "write jobdata for wheel builder task: $JOB_DATA"
-#        echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
-#        echo "script_outdir: $(pwd)" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
-#        echo "##[group]run ansible-test to start $(instance) and generate build script"
-#        pushd collections/ansible_collections/ansible/spare_tire/
-#        # FIXME don't hardcode remote Python version
-#        ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
-#        popd
-#        echo "##[endgroup]"
-#
-#        # run generated remote build script
-#        . ./remote_build.sh
-#
-#        mkdir -p $(Build.ArtifactStagingDirectory)/dist
-#        cp dist/*.whl $(Build.ArtifactStagingDirectory)/dist
-#
-#        ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
-#      name: build_wheels
-#      env:
-#        # map AWS secrets in for this step
-#        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-#        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
-#    - publish: '$(Build.ArtifactStagingDirectory)/dist/'
-#      artifact: '$(System.JobAttempt) $(System.StageDisplayName) $(System.JobDisplayName)'
-#      name: store_wheels_as_pipeline_artifacts
+- stage: pre_flight
+  jobs:
+  - job: find_missing_artifacts
+    displayName: Find Missing Artifacts
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.9'
+    - script: |
+        python -m pip install -r requirements.txt
+        python gen_build_matrix.py
+      env:
+        # map AWS secrets in for this step
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+      name: gen_matrix
+    - script: echo $(gen_matrix.matrix)
+      name: display_dynamic_matrix
+- stage: wheel_builds
+  dependsOn: pre_flight
+  condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
+  jobs:
+  - job: build
+    strategy:
+      matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.9'
+    - script: |
+        set -eux
+        echo "##[group]install ansible-core"
+        pip install ansible-core
+        echo "##[endgroup]"
+
+        # HACK: this sucks
+        echo "write jobdata for wheel builder task: $JOB_DATA"
+        echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
+        echo "script_outdir: $(pwd)" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
+        echo "##[group]run ansible-test to start $(instance) and generate build script"
+        pushd collections/ansible_collections/ansible/spare_tire/
+        # FIXME don't hardcode remote Python version
+        ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
+        popd
+        echo "##[endgroup]"
+
+        # run generated remote build script
+        . ./remote_build.sh
+
+        mkdir -p $(Build.ArtifactStagingDirectory)/dist
+        cp dist/*.whl $(Build.ArtifactStagingDirectory)/dist
+
+        ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
+      name: build_wheels
+      env:
+        # map AWS secrets in for this step
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+    - publish: '$(Build.ArtifactStagingDirectory)/dist/'
+      artifact: '$(System.JobAttempt) $(System.StageDisplayName) $(System.JobDisplayName)'
+      name: store_wheels_as_pipeline_artifacts
 
 - stage: publish
-#  dependsOn: wheel_builds
+  dependsOn: wheel_builds
   jobs:
   - job: upload_to_s3
     steps:
     - bash: sudo apt-get update -y && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends awscli
       displayName: Install AWS CLI
-#    - task: DownloadPipelineArtifact@2
-#      inputs:
-#        path: artifact_stage/
-#        patterns: '**/*.whl'
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        path: artifact_stage/
+        patterns: '**/*.whl'
     - script: |
         set -eux
         pwd
         
         # FIXME stage-specific requirements file
         python3 -m pip install dumb-pypi
-        
-        ### TEMP CODE, REMOVE
-
-        mkdir -p artifact_stage/blar
-        curl https://files.pythonhosted.org/packages/c5/8c/a6af8542a22c6212b782465ec1ef5e3dd881eaef4b47d660a3404a4cc5ae/cryptography-36.0.1-cp36-abi3-musllinux_1_1_aarch64.whl -o artifact_stage/blar/cryptography-36.0.1-cp36-abi3-musllinux_1_1_aarch64.whl
-        
-        ### END TEMP CODE
         
         ls -lR artifact_stage
         
