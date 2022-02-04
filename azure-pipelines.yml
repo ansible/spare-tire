@@ -79,6 +79,9 @@ stages:
         set -eux
         pwd
         
+        # FIXME stage-specific requirements file
+        python3 -m pip install dumb-pypi
+        
         ### TEMP CODE, REMOVE
 
         mkdir -p artifact_stage/blar
@@ -95,7 +98,7 @@ stages:
         ls -l packages/
         
         # upload packages to S3
-        aws s3 sync packages/ s3://spare-tire/packages/ --debug
+        aws s3 sync packages/ s3://spare-tire/packages/
         
         # download the complete list of packages on S3
         aws s3 ls s3://spare-tire/packages/ | awk '{print $4}' > packages.txt
@@ -118,3 +121,4 @@ stages:
         # map AWS secrets in for this step
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+        AWS_DEFAULT_REGION: us-east-1
