@@ -19,6 +19,7 @@ mkdir -p dist
 
 {% for item in job_data.packages %}
 {% call do_ssh() %}
+    set -eux
     {{ item.python }} -m pip install build
 
     mkdir -p build_tmp
@@ -55,5 +56,6 @@ mkdir -p dist
 {% endfor %}
 
 echo "##[group]copy remote artifacts to $(pwd)/dist"
+set -eux
 scp -r {{ sshident }}:/root/dist/* ./dist/
 echo "##[endgroup]"

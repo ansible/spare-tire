@@ -60,34 +60,6 @@ stages:
         # map AWS secrets in for this step
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
-
-
-
-
-
-
-
-
-#    - script: |
-#        set -eux
-#        echo "##[group]install ansible-core"
-#        pip install ansible-core
-#        echo "##[endgroup]"
-#
-#        # HACK: this sucks
-#        echo "write jobdata for wheel builder task: $JOB_DATA"
-#        echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
-#        echo "wheel_output_dir: $(Build.ArtifactStagingDirectory)/dist/" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
-#        echo "##[group]run ansible-test against $(instance)"
-#        pushd collections/ansible_collections/ansible/spare_tire/
-#        # FIXME don't hardcode remote Python version
-#        # FIXME add --remote-terminate always
-#        ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
-#        popd
-#        echo "##[endgroup]"
-#
-#        ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
-#      name: build_wheels
     - publish: '$(Build.ArtifactStagingDirectory)/dist/'
       artifact: '$(System.JobAttempt) $(System.StageDisplayName) $(System.JobDisplayName)'
       name: store_wheels_as_pipeline_artifacts
@@ -135,3 +107,7 @@ stages:
         aws s3 cp index/index.html s3://spare-tire/index.html
 
       name: sync_to_bucket
+      env:
+        # map AWS secrets in for this step
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
