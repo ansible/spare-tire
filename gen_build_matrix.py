@@ -19,7 +19,7 @@ class BuildSpec:
 
     @property
     def filename(self):
-        base_filename = '-'.join([c for c in (self.package, str(self.version), self.python_tag, self.abi_tag, self.platform_tag) if c])
+        base_filename = '-'.join([c for c in (self.package, str(self.version), self.python_tag, self.abi_tag or self.python_tag, self.platform_tag) if c])
         return f'{base_filename}.whl'
 
 
