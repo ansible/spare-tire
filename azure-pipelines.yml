@@ -1,9 +1,3 @@
-# pre-job: get latest sdist/version(s), check bucket for missing artifacts
-# if missing, fan out to one worker per target OS
-# build as necessary
-# store artifacts on job
-# final dependent job uploads artifacts to bucket
-
 pool:
   vmImage: 'ubuntu-20.04'
 
@@ -66,7 +60,7 @@ stages:
   jobs:
   - job: upload_to_s3
     steps:
-    - bash: apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends awscli
+    - bash: sudo apt-get update -y && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends awscli
       displayName: Install AWS CLI
     - task: DownloadPipelineArtifact@2
       inputs:
@@ -102,5 +96,5 @@ stages:
         aws s3 sync index/pypi/ s3://spare-tire/pypi/ --delete
         aws s3 sync index/simple/ s3://spare-tire/simple/ --delete
         aws s3 cp index/index.html s3://spare-tire/index.html
-        
+
       name: sync_to_bucket

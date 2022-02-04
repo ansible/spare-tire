@@ -29,13 +29,13 @@
     echo "building wheels for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}"
 
     # FIXME do abi options better
-    if [[ {{ item.abi | default('') }} == "abi3" ]]; then
+    if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
       ABI_ARGS='-C="--global-option=--py-limited-api" -C="--global-option={{ item.python_tag }}"'
     else
       ABI_ARGS=''
     fi
 
-    {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
+    TERM=dumb {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
 
     cd ..
     rm -rf build_tmp
