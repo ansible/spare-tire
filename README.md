@@ -1,4 +1,6 @@
 # spare-tire
+[![Build Status](https://dev.azure.com/ansible/spare-tire/_apis/build/status/CI?branchName=main)](https://dev.azure.com/ansible/spare-tire/_build/latest?definitionId=38&branchName=main)
+
 Infrastructure for building Python wheels for testing with packages lacking wheels on tested platforms, and publishing
 them to the S3-hosted spare-tire.testing.ansible.com package index.
 
