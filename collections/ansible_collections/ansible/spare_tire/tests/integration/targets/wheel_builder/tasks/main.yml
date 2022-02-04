@@ -2,65 +2,7 @@
   set_fact:
     job_data: '{{ lookup("file", "jobdata.json") | from_json }}'
 
-- name: validate inputs
-  assert:
-    that:
-    - wheel_output_dir is defined
-
-- debug:
-    var: job_data
-
-- name: build wheels
-  shell: |
-    set -eux
-
-    mkdir -p dist
-
-    # FIXME: get required packages with more metadata
-    pkg install -y lang/rust
-
-    {{ item.python }} -m pip install build
-
-    mkdir -p build_tmp && cd build_tmp
-    curl {{ item.sdist_url }} -o sdist.tgz
-    tar zxvf sdist.tgz
-    cd {{ item.name }}*
-
-    echo "building wheels for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}"
-
-    # FIXME do abi options better
-    if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
-      ABI_ARGS='-C="--global-option=--py-limited-api" -C="--global-option={{ item.python_tag }}"'
-    else
-      ABI_ARGS=''
-    fi
-
-    TERM=dumb {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
-
-    cd ..
-    rm -rf build_tmp
-
-  with_items: '{{ job_data.packages }}'
-
-- name: get wheel paths
-  find:
-    paths:
-    - ./dist
-    pattern: '*.whl'
-  register: wheel_paths
-
-- name: ensure local dist dir
-  local_action:
-    module: file
-    path: ./dist
-    state: directory
-
-- name: fetch wheels to controller
-  fetch:
-    src: '{{ item.path }}'
-    dest: '{{ wheel_output_dir }}'
-    flat: yes
-  with_items: '{{ wheel_paths.files }}'
-  register: wheels
-
-- debug: var=wheels
+- local_action:
+    module: template
+    src: remote_build.sh.j2
+    dest: '{{ script_outdir }}/remote_build.sh'

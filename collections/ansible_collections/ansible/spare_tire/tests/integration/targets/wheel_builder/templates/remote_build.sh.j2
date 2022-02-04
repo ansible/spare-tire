@@ -1,0 +1,55 @@
+{% set sshident %}-i {{ ansible_ssh_private_key_file }} root@{{ ansible_host }}{% endset %}
+
+{% macro do_ssh() -%}
+ssh {{ sshident }} bash <<'EOF'
+{{ caller() }}
+EOF
+{%- endmacro %}
+
+set -eu
+
+mkdir -p dist
+
+{% call do_ssh() %}
+    mkdir -p dist
+    pkg install -y lang/rust
+{% endcall %}
+
+{% for item in job_data.packages %}
+{% call do_ssh() %}
+    {{ item.python }} -m pip install build
+
+    mkdir -p build_tmp
+    pushd build_tmp
+
+    echo "downloading sdist for {{ item.name }}=={{ item.version }}..."
+    curl {{ item.sdist_url }} -o sdist.tgz
+
+    echo "extracting sdist..."
+    tar zxf sdist.tgz
+    cd {{ item.name }}*
+
+    echo "building wheel for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}..."
+
+
+    set -x
+
+    # FIXME do abi options better
+    if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
+      ABI_ARGS='-C=--global-option=--py-limited-api -C=--global-option={{ item.python_tag }}'
+    else
+      ABI_ARGS=''
+    fi
+
+    {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
+    # FIXME check expected filename
+
+    set +x
+
+    popd
+    rm -rf build_tmp
+{% endcall %}
+{% endfor %}
+
+echo "copying remote artifacts to $(pwd)/dist..."
+scp -r {{ sshident }}:/root/dist/* ./dist/

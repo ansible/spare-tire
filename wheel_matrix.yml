@@ -1,7 +1,7 @@
 packages:
   cryptography:
     versions:
-      36.0.0:
+      '36.0.0':
         wheels:
         - platform_tag: freebsd_12_2_release_amd64
           platform_instance: freebsd/12.2
