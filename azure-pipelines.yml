@@ -66,6 +66,8 @@ stages:
   jobs:
   - job: upload_to_s3
     steps:
+    - bash: apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends awscli
+      displayName: Install AWS CLI
     - task: DownloadPipelineArtifact@2
       inputs:
         path: artifact_stage/
@@ -77,11 +79,28 @@ stages:
         ls -lR artifact_stage
         
         # assemble all wheel artifacts to a single dir
-        mkdir -p dist
-        mv -v artifact_stage/*/*.whl dist/
+        mkdir -p packages
+        mv -v artifact_stage/*/*.whl packages/
         
-        ls -l dist/
+        ls -l packages/
         
-        echo "FIXME: upload to S3" 
-        echo "FIXME: regen index"
+        # upload packages to S3
+        aws s3 sync packages/ s3://spare-tire/packages/
+        
+        # download the complete list of packages on S3
+        aws s3 ls s3://spare-tire/packages/ | awk '{print $4}' > packages.txt
+        
+        # generate a package index
+        dumb-pypi \
+          --package-list packages.txt \
+          --output-dir index/ \
+          --packages-url https://spare-tire.testing.ansible.com/packages/ \
+          --title "Ansible Spare Tire Python Wheels" \
+          --no-generate-timestamp \
+        
+        # upload the package index
+        aws s3 sync index/pypi/ s3://spare-tire/pypi/ --delete
+        aws s3 sync index/simple/ s3://spare-tire/simple/ --delete
+        aws s3 cp index/index.html s3://spare-tire/index.html
+        
       name: sync_to_bucket
