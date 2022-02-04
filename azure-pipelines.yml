@@ -1,13 +1,23 @@
+schedules:
+  - cron: 25 1 * * *
+    displayName: Nightly package sync
+    always: true
+    branches:
+      include:
+        - main
+
 pool:
   vmImage: 'ubuntu-20.04'
 
 stages:
 - stage: pre_flight
+  displayName: Pre Flight
   jobs:
   - job: find_missing_artifacts
-    displayName: Find Missing Artifacts
+    displayName: Find missing artifacts
     steps:
     - task: UsePythonVersion@0
+      displayName: Ensure Python 3.9
       inputs:
         versionSpec: '3.9'
     - script: |
@@ -18,17 +28,19 @@ stages:
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
       name: gen_matrix
-    - script: echo $(gen_matrix.matrix)
-      name: display_dynamic_matrix
+      displayName: Generate dynamic matrix
 - stage: wheel_builds
+  displayName: Wheel builds
   dependsOn: pre_flight
   condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
   jobs:
   - job: build
+    displayName: Build
     strategy:
       matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
     steps:
     - task: UsePythonVersion@0
+      displayName: Ensure Python 3.9
       inputs:
         versionSpec: '3.9'
     - script: |
@@ -56,22 +68,27 @@ stages:
 
         ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
       name: build_wheels
+      displayName: Build wheels
       env:
         # map AWS secrets in for this step
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
     - publish: '$(Build.ArtifactStagingDirectory)/dist/'
       artifact: '$(System.JobAttempt) $(System.StageDisplayName) $(System.JobDisplayName)'
-      name: store_wheels_as_pipeline_artifacts
+      name: store_pipeline_artifacts
+      displayName: Store pipeline artifacts
 
 - stage: publish
+  displayName: Publish wheels to spare-tire index
   dependsOn: wheel_builds
   jobs:
   - job: upload_to_s3
+    displayName: Upload wheels to S3
     steps:
     - bash: sudo apt-get update -y && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends awscli
       displayName: Install AWS CLI
     - task: DownloadPipelineArtifact@2
+      displayName: Fetch pipeline artifacts
       inputs:
         path: artifact_stage/
         patterns: '**/*.whl'
@@ -110,6 +127,7 @@ stages:
         aws s3 cp index/index.html s3://spare-tire/index.html
 
       name: sync_to_bucket
+      displayName: Sync and regen index
       env:
         # map AWS secrets in for this step
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
