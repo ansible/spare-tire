@@ -11,8 +11,10 @@ set -eu
 mkdir -p dist
 
 {% call do_ssh() %}
+    echo "##[group]install build deps"
     mkdir -p dist
     pkg install -y lang/rust
+    echo "##[endgroup]"
 {% endcall %}
 
 {% for item in job_data.packages %}
@@ -22,16 +24,16 @@ mkdir -p dist
     mkdir -p build_tmp
     pushd build_tmp
 
-    echo "downloading sdist for {{ item.name }}=={{ item.version }}..."
+    echo "##[group]download sdist for {{ item.name }}=={{ item.version }}"
     curl {{ item.sdist_url }} -o sdist.tgz
+    echo "##[endgroup]"
 
-    echo "extracting sdist..."
+    echo "##[group]extract sdist"
     tar zxf sdist.tgz
     cd {{ item.name }}*
+    echo "##[endgroup]"
 
-    echo "building wheel for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}..."
-
-
+    echo "##[group]build wheel for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}"
     set -x
 
     # FIXME do abi options better
@@ -48,8 +50,10 @@ mkdir -p dist
 
     popd
     rm -rf build_tmp
+    echo "##[endgroup]"
 {% endcall %}
 {% endfor %}
 
-echo "copying remote artifacts to $(pwd)/dist..."
+echo "##[group]copy remote artifacts to $(pwd)/dist"
 scp -r {{ sshident }}:/root/dist/* ./dist/
+echo "##[endgroup]"

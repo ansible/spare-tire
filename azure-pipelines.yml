@@ -41,7 +41,7 @@ stages:
         echo "write jobdata for wheel builder task: $JOB_DATA"
         echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
         echo "script_outdir: $(pwd)" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
-        echo "##[group]run ansible-test against $(instance)"
+        echo "##[group]run ansible-test to start $(instance) and generate build script"
         pushd collections/ansible_collections/ansible/spare_tire/
         # FIXME don't hardcode remote Python version 
         ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
@@ -56,6 +56,10 @@ stages:
 
         ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
       name: build_wheels
+      env:
+        # map AWS secrets in for this step
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
 
 
 
