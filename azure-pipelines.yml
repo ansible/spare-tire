@@ -11,7 +11,7 @@ pool:
 
 stages:
 - stage: pre_flight
-  displayName: Pre Flight
+  displayName: Pre-flight
   jobs:
   - job: find_missing_artifacts
     displayName: Find missing artifacts
@@ -29,8 +29,9 @@ stages:
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
       name: gen_matrix
       displayName: Generate dynamic matrix
+
 - stage: wheel_builds
-  displayName: Wheel builds
+  displayName: Build wheels
   dependsOn: pre_flight
   condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
   jobs:
@@ -52,7 +53,11 @@ stages:
         # HACK: this sucks
         echo "write jobdata for wheel builder task: $JOB_DATA"
         echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
+        
+        # smuggle vars to test to set script output dir
         echo "script_outdir: $(pwd)" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
+        
+        
         echo "##[group]run ansible-test to start $(instance) and generate build script"
         pushd collections/ansible_collections/ansible/spare_tire/
         # FIXME don't hardcode remote Python version
@@ -79,7 +84,7 @@ stages:
       displayName: Store pipeline artifacts
 
 - stage: publish
-  displayName: Publish wheels to spare-tire index
+  displayName: Publish wheels
   dependsOn: wheel_builds
   jobs:
   - job: upload_to_s3
