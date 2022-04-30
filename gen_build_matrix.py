@@ -12,6 +12,7 @@ class BuildSpec:
     package: str
     version: str
     platform_instance: str
+    platform_arch: str
     python_tag: str
     abi_tag: t.Optional[str]
     platform_tag: str
@@ -41,11 +42,12 @@ class PackageBuildChecker:
                 for pkg_build in pkg_builds['wheels']:
                     platform_tag = pkg_build['platform_tag']
                     platform_instance = pkg_build['platform_instance']
+                    platform_arch = pkg_build['platform_arch']
                     for python_spec in pkg_build['python']:
                         python_tag = python_spec['tag']
                         abi_tag = python_spec.get('abi', '')
                         sdist_url = next(r for r in published_pkg['urls'] if r.get('packagetype') == 'sdist')['url']
-                        spec = BuildSpec(pkg_name, version, platform_instance, python_tag, abi_tag, platform_tag, sdist_url)
+                        spec = BuildSpec(pkg_name, version, platform_instance, platform_arch, python_tag, abi_tag, platform_tag, sdist_url)
                         if not self._build_exists(spec):
                             missing.add(spec)
         return missing
@@ -92,8 +94,10 @@ class PackageBuildChecker:
             job_name = f'wheel_{missing_build.platform_tag}'
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
+            job_toplevel['arch'] = missing_build.platform_arch
             job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
+            job_def['arch'] = missing_build.platform_arch
             pkgs = job_def.setdefault('packages', [])
             pkgs.append(dict(
                 name=missing_build.package,
