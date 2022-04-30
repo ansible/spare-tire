@@ -49,7 +49,7 @@ stages:
     - script: |
         set -eux
         echo "##[group]install ansible-core"
-        pip install ansible-core
+        pip install https://github.com/ansible/ansible/archive/devel.tar.gz --disable-pip-version-check
         echo "##[endgroup]"
 
         # HACK: this sucks
