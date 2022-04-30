@@ -6,6 +6,8 @@ schedules:
       include:
         - main
 
+pr: none
+
 pool:
   vmImage: 'ubuntu-20.04'
 
@@ -58,10 +60,10 @@ stages:
         echo "script_outdir: $(pwd)" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
         
         
-        echo "##[group]run ansible-test to start $(instance) and generate build script"
+        echo "##[group]run ansible-test to start $(instance),arch=${arch) and generate build script"
         pushd collections/ansible_collections/ansible/spare_tire/
         # FIXME don't hardcode remote Python version
-        ansible-test integration --target remote:$(instance),python=3.8 -vv wheel_builder
+        ansible-test integration --target remote:$(instance),arch=${arch),python=3.8 -vv wheel_builder
         popd
         echo "##[endgroup]"
 
