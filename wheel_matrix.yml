@@ -42,7 +42,7 @@ packages:
           - tag: cp38
   coverage:
     versions:
-      6.3.2:
+      6.3.3:
         wheels:
         - platform_tag: freebsd_12_3_release_amd64
           platform_instance: freebsd/12.3
