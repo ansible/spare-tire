@@ -62,8 +62,7 @@ stages:
         
         echo "##[group]run ansible-test to start $(instance),arch=$(arch) and generate build script"
         pushd collections/ansible_collections/ansible/spare_tire/
-        # FIXME don't hardcode remote Python version
-        ansible-test integration --target remote:$(instance),arch=$(arch),python=3.8 -vv wheel_builder
+        ansible-test integration --target remote:$(instance),arch=$(arch),python=$(python) -vv wheel_builder
         popd
         echo "##[endgroup]"
 
