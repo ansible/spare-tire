@@ -99,7 +99,7 @@ class PackageBuildChecker:
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
             job_toplevel['arch'] = missing_build.platform_arch
-            job_toplevel['python'] = self._pytag_to_python_version(missing_build.python_tag),
+            job_toplevel['python'] = self._pytag_to_python_version(missing_build.python_tag)
             job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
             job_def['arch'] = missing_build.platform_arch
