@@ -62,11 +62,15 @@ class PackageBuildChecker:
         return exists
 
     @staticmethod
-    def _pytag_to_python(tag):
+    def _pytag_to_python_version(tag):
         m = re.match(r'cp(?P<maj>\d)(?P<min>\d{1,2})$', tag)
         if not m:
             raise KeyError(f'invalid python tag {tag}')
-        return f'python{m.group("maj")}.{m.group("min")}'
+        return f'{m.group("maj")}.{m.group("min")}'
+
+    @staticmethod
+    def _pytag_to_python(tag):
+        return f'python{PackageBuildChecker._pytag_to_python_version(tag)}'
 
     @property
     def build_matrix(self) -> dict:
@@ -95,6 +99,7 @@ class PackageBuildChecker:
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
             job_toplevel['arch'] = missing_build.platform_arch
+            job_toplevel['python'] = self._pytag_to_python_version(missing_build.python_tag),
             job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
             job_def['arch'] = missing_build.platform_arch
