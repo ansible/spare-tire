@@ -93,6 +93,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp38
+        - platform_tag: freebsd_13_1_release_amd64
+          platform_instance: freebsd/13.1
+          platform_arch: x86_64
+          python:
+          - tag: cp39
         - platform_tag: freebsd_12_4_release_arm64
           platform_instance: freebsd/12.4
           platform_arch: aarch64
@@ -103,3 +108,8 @@ packages:
           platform_arch: aarch64
           python:
           - tag: cp38
+        - platform_tag: freebsd_13_1_release_arm64
+          platform_instance: freebsd/13.1
+          platform_arch: aarch64
+          python:
+          - tag: cp39
