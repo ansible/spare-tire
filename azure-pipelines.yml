@@ -69,7 +69,7 @@ stages:
         if [ "$(pythons)" ]; then
           echo "##[group]run ansible-test to configure additional python versions: $(pythons)"
           for python in $(pythons); do
-            ansible-test shell --target remote:$(instance),arch=$(arch),python=${python} -v id
+            ansible-test shell --target-posix remote:$(instance),arch=$(arch),python=${python} -v id
           done
           echo "##[endgroup]"
         fi
