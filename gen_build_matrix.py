@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import boto3
 import json
 import re
@@ -99,7 +101,6 @@ class PackageBuildChecker:
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
             job_toplevel['arch'] = missing_build.platform_arch
-            job_toplevel['python'] = self._pytag_to_python_version(missing_build.python_tag)
             job_def = job_toplevel.setdefault('job_data', {})
             job_def['instance'] = missing_build.platform_instance
             job_def['arch'] = missing_build.platform_arch
@@ -108,6 +109,7 @@ class PackageBuildChecker:
                 name=missing_build.package,
                 version=missing_build.version,
                 python=self._pytag_to_python(missing_build.python_tag),
+                python_version=self._pytag_to_python_version(missing_build.python_tag),
                 python_tag=missing_build.python_tag,
                 abi=missing_build.abi_tag,
                 sdist_url=missing_build.sdist_url,
@@ -117,6 +119,12 @@ class PackageBuildChecker:
         # HACK: azp barfs on > 2 levels of nesting, and only allows string values, so we have to smuggle JSON in a
         # string key for the actual structured job data
         for job_name, job in matrix.items():
+            python_versions = list(sorted(set(str_to_version(package['python_version']) for package in job['job_data']['packages'])))
+            python_version = python_versions.pop(0)
+
+            job['python'] = version_to_str(python_version)  # python version used to request the instance
+            job['pythons'] = ' '.join(version_to_str(v) for v in python_versions)  # additional python versions to install, if any
+
             job['job_data'] = json.dumps(job['job_data'])
             print(f'{job_name} data is {job["job_data"]}')
 
@@ -138,6 +146,14 @@ def main():
     if build_matrix:
         # HACK: can't figure out a stage expression that can directly sample an empty matrix to skip the subsequent stages, so we need this extra var
         print(f'##vso[task.setvariable variable=matrix_has_jobs;isOutput=true]true')
+
+
+def str_to_version(value: str) -> tuple[int, ...]:
+    return tuple(int(v) for v in value.split('.'))
+
+
+def version_to_str(value: tuple[int, ...]) -> str:
+    return '.'.join(str(v) for v in value)
 
 
 if __name__ == '__main__':

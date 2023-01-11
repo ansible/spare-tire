@@ -66,6 +66,14 @@ stages:
         popd
         echo "##[endgroup]"
 
+        if [ "$(pythons)" ]; then
+          echo "##[group]run ansible-test to configure additional python versions: $(pythons)"
+          for python in $(pythons); do
+            ansible-test shell --target remote:$(instance),arch=$(arch),python=${python} -v id
+          done
+          echo "##[endgroup]"
+        fi
+
         # run generated remote build script
         . ./remote_build.sh
 
