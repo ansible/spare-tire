@@ -9,7 +9,7 @@ schedules:
 pr: none
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-22.04'
 
 stages:
 - stage: pre_flight
@@ -19,9 +19,9 @@ stages:
     displayName: Find missing artifacts
     steps:
     - task: UsePythonVersion@0
-      displayName: Ensure Python 3.9
+      displayName: Ensure Python
       inputs:
-        versionSpec: '3.9'
+        versionSpec: '3.11'
     - script: |
         python -m pip install -r requirements.txt
         python gen_build_matrix.py
@@ -43,9 +43,9 @@ stages:
       matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
     steps:
     - task: UsePythonVersion@0
-      displayName: Ensure Python 3.9
+      displayName: Ensure Python
       inputs:
-        versionSpec: '3.9'
+        versionSpec: '3.11'
     - script: |
         set -eux
         echo "##[group]install ansible-core"
