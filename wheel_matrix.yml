@@ -40,7 +40,6 @@ packages:
           - tag: cp38
             abi: abi3
   cryptography:
-  cryptography:
     versions:
       latest:
         wheels:
