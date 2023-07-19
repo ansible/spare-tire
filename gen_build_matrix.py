@@ -7,6 +7,8 @@ import typing as t
 import yaml
 
 from dataclasses import dataclass
+from packaging.version import Version
+from packaging.specifiers import SpecifierSet
 from qypi.api import QyPI
 
 @dataclass(frozen=True)
@@ -19,6 +21,7 @@ class BuildSpec:
     abi_tag: t.Optional[str]
     platform_tag: str
     sdist_url: str
+    constraints: str
 
     @property
     def filename(self):
@@ -49,7 +52,8 @@ class PackageBuildChecker:
                         python_tag = python_spec['tag']
                         abi_tag = python_spec.get('abi', '')
                         sdist_url = next(r for r in published_pkg['urls'] if r.get('packagetype') == 'sdist')['url']
-                        spec = BuildSpec(pkg_name, version, platform_instance, platform_arch, python_tag, abi_tag, platform_tag, sdist_url)
+                        constraints = generate_constraints(pkg_name, version)
+                        spec = BuildSpec(pkg_name, version, platform_instance, platform_arch, python_tag, abi_tag, platform_tag, sdist_url, constraints)
                         if not self._build_exists(spec):
                             missing.add(spec)
         return missing
@@ -114,6 +118,7 @@ class PackageBuildChecker:
                 abi=missing_build.abi_tag,
                 sdist_url=missing_build.sdist_url,
                 expected_output_filename=missing_build.filename,
+                constraints=missing_build.constraints,
             ))
 
         # HACK: azp barfs on > 2 levels of nesting, and only allows string values, so we have to smuggle JSON in a
@@ -154,6 +159,21 @@ def str_to_version(value: str) -> tuple[int, ...]:
 
 def version_to_str(value: tuple[int, ...]) -> str:
     return '.'.join(str(v) for v in value)
+
+
+def generate_constraints(pkg_name: str, version: str) -> str:
+    build_constraints = (
+        ('pyyaml', '>= 5.4, <= 6.0', ('Cython < 3.0',)),
+    )
+
+    pkg_name = pkg_name.lower()
+    pkg_version = Version(version)
+
+    for package, specifier, constraints in build_constraints:
+        if package == pkg_name and SpecifierSet(specifier).contains(pkg_version):
+            return '\n'.join(constraints)
+
+    return ''
 
 
 if __name__ == '__main__':
