@@ -6,7 +6,10 @@ schedules:
       include:
         - main
 
-pr: none
+pr:
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: 'ubuntu-22.04'
