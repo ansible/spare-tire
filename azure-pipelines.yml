@@ -23,7 +23,7 @@ stages:
       inputs:
         versionSpec: '3.11'
     - script: |
-        python -m pip install -r requirements.txt
+        python -m pip install -r requirements.txt -c constraints.txt
         python gen_build_matrix.py
       env:
         # map AWS secrets in for this step
