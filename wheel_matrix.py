@@ -26,6 +26,7 @@ def main() -> None:
         cryptography=Package(versions=['latest'], abi='abi3'),
         cffi=Package(versions=['latest']),
         coverage=Package(versions=['6.5.0', 'latest']),
+        pyyaml=Package(versions=['6.0', 'latest']),
     )
 
     architectures = dict(
