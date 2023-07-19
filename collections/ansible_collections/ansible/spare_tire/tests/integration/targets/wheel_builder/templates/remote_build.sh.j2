@@ -38,9 +38,9 @@ mkdir -p dist
     set -x
 
     export PIP_CONSTRAINT="$PWD/constraints.txt"
-    cat << EOF > "${PIP_CONSTRAINT}"
+    cat << CONSTRAINT_EOF > "${PIP_CONSTRAINT}"
 {{ item.constraints }}
-EOF
+CONSTRAINT_EOF
 
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
