@@ -37,6 +37,11 @@ mkdir -p dist
     echo "##[group]build wheel for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}"
     set -x
 
+    export PIP_CONSTRAINT="$PWD/constraints.txt"
+    cat << EOF > "${PIP_CONSTRAINT}"
+{{ item.constraints }}
+EOF
+
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
       ABI_ARGS='-C=--global-option=--py-limited-api -C=--global-option={{ item.python_tag }}'
