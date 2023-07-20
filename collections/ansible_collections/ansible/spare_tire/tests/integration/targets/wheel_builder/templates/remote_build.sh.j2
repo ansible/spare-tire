@@ -42,6 +42,9 @@ mkdir -p dist
 {{ item.constraints }}
 CONSTRAINT_EOF
 
+    # This is required for PyYAML builds to find libyaml headers.
+    export CFLAGS='-I/usr/local/include/'
+
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
       ABI_ARGS='-C=--global-option=--py-limited-api -C=--global-option={{ item.python_tag }}'
