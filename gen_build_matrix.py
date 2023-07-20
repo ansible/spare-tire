@@ -11,6 +11,7 @@ from packaging.version import Version
 from packaging.specifiers import SpecifierSet
 from qypi.api import QyPI
 
+
 @dataclass(frozen=True)
 class BuildSpec:
     package: str
@@ -24,9 +25,12 @@ class BuildSpec:
     constraints: str
 
     @property
-    def filename(self):
-        base_filename = '-'.join([c for c in (self.package, str(self.version), self.python_tag, self.abi_tag or self.python_tag, self.platform_tag) if c])
-        return f'{base_filename}.whl'
+    def sdist_dir(self) -> str:
+        return '-'.join((self.package.replace('-', '_'), str(self.version)))
+
+    @property
+    def filename(self) -> str:
+        return '-'.join([c for c in (self.sdist_dir, self.python_tag, self.abi_tag or self.python_tag, self.platform_tag) if c]) + '.whl'
 
 
 class PackageBuildChecker:
@@ -58,7 +62,8 @@ class PackageBuildChecker:
                             missing.add(spec)
         return missing
 
-    def _build_exists(self, spec: BuildSpec) -> bool:
+    @staticmethod
+    def _build_exists(spec: BuildSpec) -> bool:
         print(f"checking bucket for {spec.filename}")
         s3 = boto3.client('s3')
         s3_objects = s3.list_objects_v2(Bucket='spare-tire', Prefix=f'packages/{spec.filename}', MaxKeys=1)
@@ -116,6 +121,7 @@ class PackageBuildChecker:
                 python_version=self._pytag_to_python_version(missing_build.python_tag),
                 python_tag=missing_build.python_tag,
                 abi=missing_build.abi_tag,
+                sdist_dir=missing_build.sdist_dir,
                 sdist_url=missing_build.sdist_url,
                 expected_output_filename=missing_build.filename,
                 constraints=missing_build.constraints,
