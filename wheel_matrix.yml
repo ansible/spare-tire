@@ -30,6 +30,32 @@ packages:
             abi: abi3
   cryptography:
     versions:
+      40.0.1:
+        wheels:
+        - platform_tag: freebsd_12_4_release_amd64
+          platform_instance: freebsd/12.4
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+            abi: abi3
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+            abi: abi3
+        - platform_tag: freebsd_12_4_release_arm64
+          platform_instance: freebsd/12.4
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+            abi: abi3
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+            abi: abi3
       latest:
         wheels:
         - platform_tag: freebsd_12_4_release_amd64
