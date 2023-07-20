@@ -26,6 +26,7 @@ def main() -> None:
         cryptography=Package(versions=['latest'], abi='abi3'),
         cffi=Package(versions=['latest']),
         coverage=Package(versions=['6.5.0', 'latest']),
+        MarkupSafe=Package(versions=['2.0.0', '2.1.2', 'latest']),
         PyYAML=Package(versions=['6.0', 'latest']),
     )
 
