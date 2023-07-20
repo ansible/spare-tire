@@ -50,7 +50,8 @@ CONSTRAINT_EOF
     fi
 
     {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
-    # FIXME check expected filename
+
+    ls -l "../../dist/{{ item.expected_output_filename }}"
 
     set +x
 

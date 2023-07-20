@@ -26,11 +26,17 @@ class BuildSpec:
 
     @property
     def sdist_dir(self) -> str:
-        return '-'.join((self.package.replace('-', '_'), str(self.version)))
+        return f'{self.package}-{self.version}'
 
     @property
     def filename(self) -> str:
-        return '-'.join([c for c in (self.sdist_dir, self.python_tag, self.abi_tag or self.python_tag, self.platform_tag) if c]) + '.whl'
+        return '-'.join([c for c in (
+            self.package.replace('-', '_'),
+            str(self.version),
+            self.python_tag,
+            self.abi_tag or self.python_tag,
+            self.platform_tag,
+        ) if c]) + '.whl'
 
 
 class PackageBuildChecker:
