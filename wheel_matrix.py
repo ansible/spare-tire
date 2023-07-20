@@ -23,7 +23,7 @@ def main() -> None:
 
     packages = dict(
         bcrypt=Package(versions=['latest'], abi='abi3'),
-        cryptography=Package(versions=['latest'], abi='abi3'),
+        cryptography=Package(versions=['40.0.1', 'latest'], abi='abi3'),
         cffi=Package(versions=['latest']),
         coverage=Package(versions=['6.5.0', 'latest']),
         MarkupSafe=Package(versions=['2.0.0', '2.1.2', 'latest']),
