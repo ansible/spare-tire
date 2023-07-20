@@ -11,6 +11,7 @@ import yaml
 
 @dataclasses.dataclass
 class Package:
+    name: str
     versions: list[str]
     abi: str = ''
 
@@ -21,14 +22,14 @@ def main() -> None:
         '13.2': ['3.9', '3.11'],
     }
 
-    packages = dict(
-        bcrypt=Package(versions=['latest'], abi='abi3'),
-        cryptography=Package(versions=['40.0.1', 'latest'], abi='abi3'),
-        cffi=Package(versions=['latest']),
-        coverage=Package(versions=['6.5.0', 'latest']),
-        MarkupSafe=Package(versions=['2.0.0', '2.1.2', 'latest']),
-        PyYAML=Package(versions=['6.0', 'latest']),
-    )
+    packages = [
+        Package(name='bcrypt', versions=['latest'], abi='abi3'),
+        Package(name='cryptography', versions=['40.0.1', 'latest'], abi='abi3'),
+        Package(name='cffi', versions=['latest']),
+        Package(name='coverage', versions=['6.5.0', 'latest']),
+        Package(name='MarkupSafe', versions=['2.0.0', '2.1.2', 'latest']),
+        Package(name='PyYAML', versions=['6.0', 'latest']),
+    ]
 
     architectures = dict(
         amd64='x86_64',
@@ -39,22 +40,22 @@ def main() -> None:
         packages=(matrix_packages := {}),
     )
 
-    for package, config in packages.items():
-        matrix_packages[package] = dict(versions=(matrix_versions := {}))
+    for package in packages:
+        matrix_packages[package.name] = dict(versions=(matrix_versions := {}))
 
-        for version in config.versions:
+        for version in package.versions:
             matrix_versions[version] = dict(wheels=(matrix_wheels := []))
 
             for arch_label, arch in architectures.items():
                 for freebsd_version, pythons in freebsd_pythons.items():
-                    if config.abi:
+                    if package.abi:
                         pythons = pythons[:1]  # packages with ABI builds only need to support the lowest Python version
 
                     for python in pythons:
                         matrix_python = dict(tag=f'cp{python.replace(".", "")}')
 
-                        if config.abi:
-                            matrix_python.update(abi=config.abi)
+                        if package.abi:
+                            matrix_python.update(abi=package.abi)
 
                         matrix_wheels.append(dict(
                             platform_tag=f'freebsd_{freebsd_version.replace(".", "_")}_release_{arch_label}',
