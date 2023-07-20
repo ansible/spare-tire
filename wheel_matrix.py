@@ -27,6 +27,7 @@ def main() -> None:
         Package(name='cryptography', versions=['40.0.1', 'latest'], abi='abi3'),
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=['6.5.0', 'latest']),
+        Package(name='lazy-object-proxy', versions=['latest']),
         Package(name='MarkupSafe', versions=['2.0.0', '2.1.2', 'latest']),
         Package(name='PyYAML', versions=['6.0', 'latest']),
     ]
