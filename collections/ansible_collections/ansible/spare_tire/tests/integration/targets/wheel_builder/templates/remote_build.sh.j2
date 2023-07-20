@@ -13,7 +13,7 @@ mkdir -p dist
 {% call do_ssh() %}
     echo "##[group]install build deps"
     mkdir -p dist
-    pkg install -y lang/rust
+    pkg install -y lang/rust libyaml
     echo "##[endgroup]"
 {% endcall %}
 
@@ -41,6 +41,9 @@ mkdir -p dist
     cat << CONSTRAINT_EOF > "${PIP_CONSTRAINT}"
 {{ item.constraints }}
 CONSTRAINT_EOF
+
+    # This is required for PyYAML builds to find libyaml headers.
+    export CFLAGS='-I/usr/local/include/'
 
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
