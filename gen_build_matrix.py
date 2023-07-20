@@ -33,7 +33,6 @@ class BuildSpec:
         return '-'.join([c for c in (
             self.package.replace('-', '_'),
             str(self.version),
-            self.sdist_dir,
             self.python_tag,
             self.abi_tag or self.python_tag,
             self.platform_tag,
