@@ -20,7 +20,12 @@ mkdir -p dist
 {% for item in job_data.packages %}
 {% call do_ssh() %}
     set -eux
-    {{ item.python }} -m pip install build
+    # FIXME: we have to use an old version of build until setuptools sorts out how to ignore custom args
+    # to PEP517 build hooks.
+    # see also: https://github.com/pypa/build/issues/264#issuecomment-1719316626
+    # see also: https://github.com/pypa/setuptools/issues/3896#issuecomment-1719397299
+    # see also: https://github.com/pypa/pip/issues/12273
+    {{ item.python }} -m pip install build==0.1.0
 
     mkdir -p build_tmp
     pushd build_tmp
