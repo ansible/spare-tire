@@ -25,7 +25,7 @@ mkdir -p dist
     # see also: https://github.com/pypa/build/issues/264#issuecomment-1719316626
     # see also: https://github.com/pypa/setuptools/issues/3896#issuecomment-1719397299
     # see also: https://github.com/pypa/pip/issues/12273
-    {{ item.python }} -m pip install build==0.1.0
+    {{ item.python }} -m pip install build==0.10.0
 
     mkdir -p build_tmp
     pushd build_tmp
