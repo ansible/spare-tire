@@ -118,7 +118,7 @@ packages:
           - tag: cp311
   coverage:
     versions:
-      7.3.0:
+      7.3.2:
         wheels:
         - platform_tag: freebsd_12_4_release_amd64
           platform_instance: freebsd/12.4
