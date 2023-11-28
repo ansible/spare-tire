@@ -20,12 +20,7 @@ mkdir -p dist
 {% for item in job_data.packages %}
 {% call do_ssh() %}
     set -eux
-    # FIXME: we have to use an old version of build until setuptools sorts out how to ignore custom args
-    # to PEP517 build hooks.
-    # see also: https://github.com/pypa/build/issues/264#issuecomment-1719316626
-    # see also: https://github.com/pypa/setuptools/issues/3896#issuecomment-1719397299
-    # see also: https://github.com/pypa/pip/issues/12273
-    {{ item.python }} -m pip install build==0.10.0
+    {{ item.python }} -m pip install build
 
     mkdir -p build_tmp
     pushd build_tmp
@@ -52,7 +47,7 @@ CONSTRAINT_EOF
 
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
-      ABI_ARGS='-C=--global-option=--py-limited-api -C=--global-option={{ item.python_tag }}'
+      ABI_ARGS='-C=--build-option=--py-limited-api -C=--build-option={{ item.python_tag }}'
     else
       ABI_ARGS=''
     fi
