@@ -18,7 +18,6 @@ class Package:
 
 def main() -> None:
     freebsd_pythons = {
-        '12.4': ['3.9'],
         '13.2': ['3.9', '3.11'],
     }
 
