@@ -10,17 +10,17 @@ packages:
           python:
           - tag: cp39
             abi: abi3
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-            abi: abi3
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
           python:
           - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
             abi: abi3
         - platform_tag: freebsd_14_0_release_arm64
           platform_instance: freebsd/14.0
@@ -38,11 +38,23 @@ packages:
           python:
           - tag: cp39
             abi: abi3
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+            abi: abi3
         - platform_tag: freebsd_13_2_release_arm64
           platform_instance: freebsd/13.2
           platform_arch: aarch64
           python:
           - tag: cp39
+            abi: abi3
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
             abi: abi3
       latest:
         wheels:
@@ -52,17 +64,17 @@ packages:
           python:
           - tag: cp39
             abi: abi3
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-            abi: abi3
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
           python:
           - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
             abi: abi3
         - platform_tag: freebsd_14_0_release_arm64
           platform_instance: freebsd/14.0
@@ -84,6 +96,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_13_2_release_arm64
           platform_instance: freebsd/13.2
           platform_arch: aarch64
@@ -91,6 +108,11 @@ packages:
           - tag: cp39
         - platform_tag: freebsd_13_2_release_arm64
           platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -108,157 +130,8 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp311
-      latest:
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp311
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp311
-  lazy-object-proxy:
-    versions:
-      latest:
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp311
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp311
-  MarkupSafe:
-    versions:
-      2.0.0:
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp311
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp311
-      2.1.2:
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp311
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp311
-      latest:
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp311
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp311
-  PyNaCl:
-    versions:
-      latest:
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-            abi: abi3
-        - platform_tag: freebsd_13_2_release_arm64
-          platform_instance: freebsd/13.2
-          platform_arch: aarch64
-          python:
-          - tag: cp39
-            abi: abi3
-  PyYAML:
-    versions:
-      '6.0':
-        wheels:
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
-          platform_arch: x86_64
-          python:
-          - tag: cp39
-        - platform_tag: freebsd_13_2_release_amd64
-          platform_instance: freebsd/13.2
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
           platform_arch: x86_64
           python:
           - tag: cp311
@@ -289,6 +162,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_13_2_release_arm64
           platform_instance: freebsd/13.2
           platform_arch: aarch64
@@ -296,6 +174,237 @@ packages:
           - tag: cp39
         - platform_tag: freebsd_13_2_release_arm64
           platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+  lazy-object-proxy:
+    versions:
+      latest:
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+  MarkupSafe:
+    versions:
+      2.0.0:
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+      2.1.2:
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+      latest:
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+  PyNaCl:
+    versions:
+      latest:
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+            abi: abi3
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+            abi: abi3
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+            abi: abi3
+  PyYAML:
+    versions:
+      '6.0':
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+      latest:
+        wheels:
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_amd64
+          platform_instance: freebsd/13.2
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_amd64
+          platform_instance: freebsd/14.0
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp39
+        - platform_tag: freebsd_13_2_release_arm64
+          platform_instance: freebsd/13.2
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_14_0_release_arm64
+          platform_instance: freebsd/14.0
           platform_arch: aarch64
           python:
           - tag: cp311
