@@ -19,6 +19,7 @@ class Package:
 def main() -> None:
     freebsd_pythons = {
         '13.2': ['3.9', '3.11'],
+        '14.0': ['3.9', '3.11'],
     }
 
     packages = [
