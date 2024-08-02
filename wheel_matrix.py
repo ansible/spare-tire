@@ -26,7 +26,8 @@ def main() -> None:
 
     packages = [
         Package(name='bcrypt', versions=['latest'], abi='abi3'),
-        Package(name='cryptography', versions=['40.0.1', 'latest'], abi='abi3'),
+        # cryptography 43 switched to maturin, which requires a newer rustc than is available, preventing builds of latest
+        Package(name='cryptography', versions=['40.0.1', '42.0.8'], abi='abi3'),
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=['7.3.2', 'latest']),
         Package(name='lazy-object-proxy', versions=['latest']),
