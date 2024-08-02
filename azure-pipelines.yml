@@ -28,10 +28,6 @@ stages:
     - script: |
         python -m pip install -r requirements.txt -c constraints.txt
         python gen_build_matrix.py
-      env:
-        # map AWS secrets in for this step
-        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
       name: gen_matrix
       displayName: Generate dynamic matrix
 
@@ -86,10 +82,6 @@ stages:
         ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
       name: build_wheels
       displayName: Build wheels
-      env:
-        # map AWS secrets in for this step
-        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
     - publish: '$(Build.ArtifactStagingDirectory)/dist/'
       artifact: '$(System.JobAttempt) $(System.StageDisplayName) $(System.JobDisplayName)'
       name: store_pipeline_artifacts
@@ -146,7 +138,4 @@ stages:
       name: sync_to_bucket
       displayName: Sync and regen index
       env:
-        # map AWS secrets in for this step
-        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
         AWS_DEFAULT_REGION: us-east-1
