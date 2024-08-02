@@ -104,7 +104,7 @@ packages:
           python:
           - tag: cp39
             abi: abi3
-      latest:
+      42.0.8:
         wheels:
         - platform_tag: freebsd_13_2_release_amd64
           platform_instance: freebsd/13.2
