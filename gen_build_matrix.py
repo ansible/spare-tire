@@ -25,8 +25,16 @@ class BuildSpec:
     constraints: str
 
     @property
+    def normalized_package(self) -> str:
+        return re.sub(r"[-_.]+", "-", self.package).lower()
+
+    @property
     def sdist_dir(self) -> str:
         return f'{self.package}-{self.version}'
+
+    @property
+    def sdist_dir_normalized(self) -> str:
+        return f'{self.normalized_package}-{self.version}'
 
     @property
     def filename(self) -> str:
@@ -128,6 +136,7 @@ class PackageBuildChecker:
                 python_tag=missing_build.python_tag,
                 abi=missing_build.abi_tag,
                 sdist_dir=missing_build.sdist_dir,
+                sdist_dir_normalized=missing_build.sdist_dir_normalized,
                 sdist_url=missing_build.sdist_url,
                 expected_output_filename=missing_build.filename,
                 constraints=missing_build.constraints,
