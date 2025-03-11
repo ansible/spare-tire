@@ -22,6 +22,12 @@ packages:
           python:
           - tag: cp311
             abi: abi3
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+            abi: abi3
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -54,6 +60,12 @@ packages:
             abi: abi3
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -98,6 +110,12 @@ packages:
           python:
           - tag: cp311
             abi: abi3
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+            abi: abi3
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -130,6 +148,12 @@ packages:
             abi: abi3
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -172,6 +196,12 @@ packages:
           python:
           - tag: cp311
             abi: abi3
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+            abi: abi3
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -204,6 +234,12 @@ packages:
             abi: abi3
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -255,6 +291,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -302,6 +343,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -359,6 +405,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -406,6 +457,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -461,6 +517,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -508,6 +569,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -565,6 +631,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -612,6 +683,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -669,6 +745,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -716,6 +797,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -771,6 +857,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -818,6 +909,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -873,6 +969,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -920,6 +1021,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -970,6 +1076,12 @@ packages:
           python:
           - tag: cp311
             abi: abi3
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
+            abi: abi3
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -1002,6 +1114,12 @@ packages:
             abi: abi3
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+            abi: abi3
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -1053,6 +1171,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -1100,6 +1223,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
@@ -1155,6 +1283,11 @@ packages:
           platform_arch: x86_64
           python:
           - tag: cp311
+        - platform_tag: freebsd_13_5_release_amd64
+          platform_instance: freebsd/13.5
+          platform_arch: x86_64
+          python:
+          - tag: cp311
         - platform_tag: freebsd_14_0_release_amd64
           platform_instance: freebsd/14.0
           platform_arch: x86_64
@@ -1202,6 +1335,11 @@ packages:
           - tag: cp311
         - platform_tag: freebsd_13_4_release_arm64
           platform_instance: freebsd/13.4
+          platform_arch: aarch64
+          python:
+          - tag: cp311
+        - platform_tag: freebsd_13_5_release_arm64
+          platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
