@@ -39,7 +39,7 @@ class BuildSpec:
     @property
     def filename(self) -> str:
         return '-'.join([c for c in (
-            self.package.replace('-', '_'),
+            self.normalized_package,
             str(self.version),
             self.python_tag,
             self.abi_tag or self.python_tag,
