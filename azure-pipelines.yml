@@ -12,7 +12,7 @@ pr:
       - main
 
 pool:
-  vmImage: 'ubuntu-22.04'
+  vmImage: 'ubuntu-24.04'
 
 stages:
 - stage: pre_flight
@@ -24,7 +24,7 @@ stages:
     - task: UsePythonVersion@0
       displayName: Ensure Python
       inputs:
-        versionSpec: '3.11'
+        versionSpec: '3.13'
     - script: |
         python -m pip install -r requirements.txt -c constraints.txt
         python gen_build_matrix.py
@@ -48,7 +48,7 @@ stages:
     - task: UsePythonVersion@0
       displayName: Ensure Python
       inputs:
-        versionSpec: '3.11'
+        versionSpec: '3.13'
     - script: |
         set -eux
         echo "##[group]install ansible-core"
