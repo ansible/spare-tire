@@ -102,7 +102,7 @@ stages:
   - job: upload_to_s3
     displayName: Upload wheels to S3
     steps:
-    - bash: sudo apt-get update -y && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends awscli
+    - bash: sudo snap install aws-cli --classic
       displayName: Install AWS CLI
     - task: DownloadPipelineArtifact@2
       displayName: Fetch pipeline artifacts
