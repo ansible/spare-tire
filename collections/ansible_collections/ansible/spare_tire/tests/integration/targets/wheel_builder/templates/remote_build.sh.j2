@@ -31,7 +31,7 @@ mkdir -p dist
 
     echo "##[group]extract sdist"
     tar zxf sdist.tgz
-    cd {{ item.sdist_dir_normalized }} || cd {{ item.sdist_dir }}
+    cd {{ item.sdist_dir_normalized }} || cd {{ item.sdist_dir_underscore }} || cd {{ item.sdist_dir }}
     echo "##[endgroup]"
 
     echo "##[group]build wheel for {{ item.name }} version {{ item.version }} python {{ item.python }} abi {{ item.abi | default('') }}"

@@ -29,6 +29,10 @@ class BuildSpec:
         return re.sub(r"[-_.]+", "-", self.package).lower()
 
     @property
+    def underscore_package(self) -> str:
+        return self.normalized_package.replace("-", "_")
+
+    @property
     def sdist_dir(self) -> str:
         return f'{self.package}-{self.version}'
 
@@ -37,9 +41,13 @@ class BuildSpec:
         return f'{self.normalized_package}-{self.version}'
 
     @property
+    def sdist_dir_underscore(self) -> str:
+        return f'{self.underscore_package}-{self.version}'
+
+    @property
     def filename(self) -> str:
         return '-'.join([c for c in (
-            self.normalized_package.replace("-", "_"),
+            self.underscore_package,
             str(self.version),
             self.python_tag,
             self.abi_tag or self.python_tag,
@@ -137,6 +145,7 @@ class PackageBuildChecker:
                 abi=missing_build.abi_tag,
                 sdist_dir=missing_build.sdist_dir,
                 sdist_dir_normalized=missing_build.sdist_dir_normalized,
+                sdist_dir_underscore=missing_build.sdist_dir_underscore,
                 sdist_url=missing_build.sdist_url,
                 expected_output_filename=missing_build.filename,
                 constraints=missing_build.constraints,
