@@ -30,7 +30,7 @@ def main() -> None:
         # cryptography 43 switched to maturin, which requires a newer rustc than is available, preventing builds of latest
         Package(name='cryptography', versions=['40.0.1', '42.0.8'], abi='abi3'),
         Package(name='cffi', versions=['latest']),
-        Package(name='coverage', versions=['7.3.2', 'latest']),
+        Package(name='coverage', versions=['7.6.1', '7.9.1', 'latest']),
         Package(name='lazy-object-proxy', versions=['latest']),
         Package(name='MarkupSafe', versions=['2.0.0', '2.1.2', 'latest']),
         Package(name='PyNaCl', versions=['latest'], abi='abi3'),
