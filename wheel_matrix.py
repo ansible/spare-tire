@@ -23,16 +23,29 @@ def main() -> None:
         '14.2': ['3.11'],
     }
 
+    # The latest version of each package should be included when possible.
+    # To support backporting FreeBSD versions to active stable branches, pinned requirements (except from core-only sanity tests) should also be included.
     packages = [
         Package(name='bcrypt', versions=['latest'], abi='abi3'),
-        # cryptography 43 switched to maturin, which requires a newer rustc than is available, preventing builds of latest
-        Package(name='cryptography', versions=['40.0.1', '42.0.8'], abi='abi3'),
+        Package(name='cryptography', versions=['latest'], abi='abi3'),
         Package(name='cffi', versions=['latest']),
-        Package(name='coverage', versions=['7.6.1', '7.9.1', 'latest']),
+        Package(name='coverage', versions=[
+            'latest',
+            '7.6.1',  # 2.19, 2.18
+            '7.3.2',  # 2.17
+        ]),
         Package(name='lazy-object-proxy', versions=['latest']),
-        Package(name='MarkupSafe', versions=['2.0.0', '2.1.2', 'latest']),
+        Package(name='MarkupSafe', versions=[
+            'latest',
+            '3.0.2',  # 2.19
+            '2.1.5',  # 2.18, 2.17
+        ]),
         Package(name='PyNaCl', versions=['latest'], abi='abi3'),
-        Package(name='PyYAML', versions=['6.0', 'latest']),
+        Package(name='PyYAML', versions=[
+            'latest',
+            '6.0.2',  # 2.19, 2.18
+            '6.0.1',  # 2.17
+        ]),
     ]
 
     architectures = dict(
