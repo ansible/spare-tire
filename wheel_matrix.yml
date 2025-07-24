@@ -44,37 +44,37 @@ packages:
     versions:
       latest:
         wheels:
-        - platform_tag: freebsd_13_5_release_amd64
+        - platform_tag: freebsd_13_5_RELEASE_amd64
           platform_instance: freebsd/13.5
           platform_arch: x86_64
           python:
           - tag: cp311
             abi: abi3
-        - platform_tag: freebsd_14_1_release_amd64
+        - platform_tag: freebsd_14_1_RELEASE_amd64
           platform_instance: freebsd/14.1
           platform_arch: x86_64
           python:
           - tag: cp39
             abi: abi3
-        - platform_tag: freebsd_14_2_release_amd64
+        - platform_tag: freebsd_14_2_RELEASE_amd64
           platform_instance: freebsd/14.2
           platform_arch: x86_64
           python:
           - tag: cp311
             abi: abi3
-        - platform_tag: freebsd_13_5_release_arm64
+        - platform_tag: freebsd_13_5_RELEASE_arm64
           platform_instance: freebsd/13.5
           platform_arch: aarch64
           python:
           - tag: cp311
             abi: abi3
-        - platform_tag: freebsd_14_1_release_arm64
+        - platform_tag: freebsd_14_1_RELEASE_arm64
           platform_instance: freebsd/14.1
           platform_arch: aarch64
           python:
           - tag: cp39
             abi: abi3
-        - platform_tag: freebsd_14_2_release_arm64
+        - platform_tag: freebsd_14_2_RELEASE_arm64
           platform_instance: freebsd/14.2
           platform_arch: aarch64
           python:
