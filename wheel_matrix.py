@@ -14,6 +14,7 @@ class Package:
     name: str
     versions: list[str]
     abi: str = ''
+    release_uppercase: bool = False
 
 
 def main() -> None:
@@ -27,7 +28,7 @@ def main() -> None:
     # To support backporting FreeBSD versions to active stable branches, pinned requirements (except from core-only sanity tests) should also be included.
     packages = [
         Package(name='bcrypt', versions=['latest'], abi='abi3'),
-        Package(name='cryptography', versions=['latest'], abi='abi3'),
+        Package(name='cryptography', versions=['latest'], abi='abi3', release_uppercase=True),
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=[
             'latest',
@@ -74,8 +75,13 @@ def main() -> None:
                         if package.abi:
                             matrix_python.update(abi=package.abi)
 
+                        if package.release_uppercase:
+                            release = 'RELEASE'
+                        else:
+                            release = 'release'
+
                         matrix_wheels.append(dict(
-                            platform_tag=f'freebsd_{freebsd_version.replace(".", "_")}_release_{arch_label}',
+                            platform_tag=f'freebsd_{freebsd_version.replace(".", "_")}_{release}_{arch_label}',
                             platform_instance=f'freebsd/{freebsd_version}',
                             platform_arch=arch,
                             python=[
