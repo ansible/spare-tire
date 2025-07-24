@@ -128,7 +128,7 @@ class PackageBuildChecker:
         #       abi: abi3
 
         for missing_build in missing:
-            job_name = f'wheel_{missing_build.platform_tag}'
+            job_name = f'wheel_{missing_build.platform_tag.lower()}'
             job_toplevel = matrix.setdefault(job_name, {})
             job_toplevel['instance'] = missing_build.platform_instance
             job_toplevel['arch'] = missing_build.platform_arch

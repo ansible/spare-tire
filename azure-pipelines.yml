@@ -51,6 +51,16 @@ stages:
         versionSpec: '3.13'
     - script: |
         set -eux
+        mkdir ~/.ssh/
+        cat >> ~/.ssh/config << EOF
+        Host *
+          TCPKeepAlive no
+          ServerAliveInterval 60
+        EOF
+      name: configure_ssh
+      displayName: Configure SSH
+    - script: |
+        set -eux
         echo "##[group]install ansible-core"
         pip install https://github.com/ansible/ansible/archive/devel.tar.gz --disable-pip-version-check
         echo "##[endgroup]"
