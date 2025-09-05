@@ -29,7 +29,7 @@ def main() -> None:
     # To support backporting FreeBSD versions to active stable branches, pinned requirements (except from core-only sanity tests) should also be included.
     packages = [
         Package(name='bcrypt', versions=['latest'], abi='abi3'),
-        Package(name='cryptography', versions=['latest'], abi='abi3', release_uppercase=True),
+        Package(name='cryptography', versions=['latest'], abi='abi3'),
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=[
             'latest',
