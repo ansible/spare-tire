@@ -13,7 +13,7 @@ mkdir -p dist
 {% call do_ssh() %}
     echo "##[group]install build deps"
     mkdir -p dist
-    pkg install -y lang/rust libyaml
+    pkg install -y lang/rust libyaml gmake
     echo "##[endgroup]"
 {% endcall %}
 
@@ -51,6 +51,9 @@ CONSTRAINT_EOF
     else
       ABI_ARGS=''
     fi
+
+    # Required for PyNaCl versions > 1.16.0
+    export MAKE=gmake
 
     {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
 
