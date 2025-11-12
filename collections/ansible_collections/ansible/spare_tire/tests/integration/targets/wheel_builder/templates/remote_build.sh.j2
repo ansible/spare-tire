@@ -13,13 +13,7 @@ mkdir -p dist
 {% call do_ssh() %}
     echo "##[group]install build deps"
     mkdir -p dist
-    pkg install -y lang/rust libyaml gmake
-    echo "##[endgroup]"
-
-    echo "##[group]create gmake link"
-    # Temporary work around until PyNaCl > 1.16.0 is released with https://github.com/pyca/pynacl/pull/895
-    mkdir -p /tmp/bin
-    ln -s /usr/local/bin/gmake /tmp/bin/make
+    pkg install -y lang/rust libyaml
     echo "##[endgroup]"
 {% endcall %}
 
@@ -50,11 +44,6 @@ CONSTRAINT_EOF
 
     # This is required for PyYAML builds to find libyaml headers.
     export CFLAGS='-I/usr/local/include/'
-
-    # Required for PyNaCl build to use gmake
-    if [[ "{{ item.name }}" == "PyNaCl" ]]; then
-        export PATH=/tmp/bin:$PATH
-    fi
 
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
