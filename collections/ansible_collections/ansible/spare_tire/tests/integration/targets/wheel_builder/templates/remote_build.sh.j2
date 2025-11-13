@@ -15,12 +15,6 @@ mkdir -p dist
     mkdir -p dist
     pkg install -y lang/rust libyaml gmake
     echo "##[endgroup]"
-
-    echo "##[group]create gmake link"
-    # Temporary work around until PyNaCl > 1.16.0 is released with https://github.com/pyca/pynacl/pull/895
-    mkdir -p /tmp/bin
-    ln -s /usr/local/bin/gmake /tmp/bin/make
-    echo "##[endgroup]"
 {% endcall %}
 
 {% for item in job_data.packages %}
@@ -51,17 +45,15 @@ CONSTRAINT_EOF
     # This is required for PyYAML builds to find libyaml headers.
     export CFLAGS='-I/usr/local/include/'
 
-    # Required for PyNaCl build to use gmake
-    if [[ "{{ item.name }}" == "PyNaCl" ]]; then
-        export PATH=/tmp/bin:$PATH
-    fi
-
     # FIXME do abi options better
     if [[ "{{ item.abi | default('') }}" == "abi3" ]]; then
       ABI_ARGS='-C=--build-option=--py-limited-api -C=--build-option={{ item.python_tag }}'
     else
       ABI_ARGS=''
     fi
+
+    # Required for PyNaCl versions > 1.16.0
+    export MAKE=gmake
 
     {{ item.python }} -m build -w -o ../../dist $ABI_ARGS .
 
