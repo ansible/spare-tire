@@ -23,6 +23,7 @@ def main() -> None:
         '14.1': ['3.9', '3.11'],
         '14.2': ['3.11'],
         '14.3': ['3.11'],
+        '15.0': ['3.12'],
     }
 
     # The latest version of each package should be included when possible.
