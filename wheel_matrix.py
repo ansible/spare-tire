@@ -34,6 +34,7 @@ def main() -> None:
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=[
             'latest',
+            '7.10.7',  # 2.20
             '7.6.1',  # 2.19, 2.18
             '7.3.2',  # 2.17
         ]),
