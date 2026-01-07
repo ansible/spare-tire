@@ -34,18 +34,21 @@ def main() -> None:
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=[
             'latest',
+            '7.10.7',  # 2.20
             '7.6.1',  # 2.19, 2.18
             '7.3.2',  # 2.17
         ]),
         Package(name='lazy-object-proxy', versions=['latest']),
         Package(name='MarkupSafe', versions=[
             'latest',
+            '3.0.3',  # 2.20
             '3.0.2',  # 2.19
             '2.1.5',  # 2.18, 2.17
         ]),
         Package(name='PyNaCl', versions=['latest'], abi='abi3'),
         Package(name='PyYAML', versions=[
             'latest',
+            '6.0.3',  # 2.20
             '6.0.2',  # 2.19, 2.18
             '6.0.1',  # 2.17
         ]),
