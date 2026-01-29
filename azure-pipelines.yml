@@ -136,23 +136,23 @@ stages:
         ls -l packages/
         
         # upload packages to S3
-        aws s3 sync packages/ s3://spare-tire/packages/
+        aws s3 sync packages/ s3://spare-tire-service/packages/
         
         # download the complete list of packages on S3
-        aws s3 ls s3://spare-tire/packages/ | awk '{print $4}' > packages.txt
+        aws s3 ls s3://spare-tire-service/packages/ | awk '{print $4}' > packages.txt
         
         # generate a package index
         dumb-pypi \
           --package-list packages.txt \
           --output-dir index/ \
-          --packages-url https://spare-tire.testing.ansible.com/packages/ \
+          --packages-url https://spare-tire.core.ansible.com/packages/ \
           --title "Ansible Spare Tire Python Wheels" \
           --no-generate-timestamp \
         
         # upload the package index
-        aws s3 sync index/pypi/ s3://spare-tire/pypi/ --delete
-        aws s3 sync index/simple/ s3://spare-tire/simple/ --delete
-        aws s3 cp index/index.html s3://spare-tire/index.html
+        aws s3 sync index/pypi/ s3://spare-tire-service/pypi/ --delete
+        aws s3 sync index/simple/ s3://spare-tire-service/simple/ --delete
+        aws s3 cp index/index.html s3://spare-tire-service/index.html
 
       name: sync_to_bucket
       displayName: Sync and regen index
