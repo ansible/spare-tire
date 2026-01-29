@@ -15,129 +15,21 @@ pool:
   vmImage: 'ubuntu-24.04'
 
 stages:
-- stage: pre_flight
-  displayName: Pre-flight
-  jobs:
-  - job: find_missing_artifacts
-    displayName: Find missing artifacts
-    steps:
-    - task: UsePythonVersion@0
-      displayName: Ensure Python
-      inputs:
-        versionSpec: '3.13'
-    - script: |
-        python -m pip install -r requirements.txt -c constraints.txt
-        python gen_build_matrix.py
-      env:
-        # map AWS secrets in for this step
-        AWS_ACCESS_KEY_ID: $(ACCESS_KEY_ID)
-        AWS_SECRET_ACCESS_KEY: $(SECRET_ACCESS_KEY)
-      name: gen_matrix
-      displayName: Generate dynamic matrix
-
-- stage: wheel_builds
-  displayName: Build wheels
-  dependsOn: pre_flight
-  condition: dependencies.pre_flight.outputs['find_missing_artifacts.gen_matrix.matrix_has_jobs']
-  jobs:
-  - job: build
-    displayName: Build
-    strategy:
-      matrix: $[ stageDependencies.pre_flight.find_missing_artifacts.outputs['gen_matrix.matrix'] ]
-    steps:
-    - task: UsePythonVersion@0
-      displayName: Ensure Python
-      inputs:
-        versionSpec: '3.13'
-    - script: |
-        set -eux
-        mkdir ~/.ssh/
-        cat >> ~/.ssh/config << EOF
-        Host *
-          TCPKeepAlive no
-          ServerAliveInterval 60
-          Ciphers -chacha20-poly1305@openssh.com  # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=292248
-        EOF
-      name: configure_ssh
-      displayName: Configure SSH
-    - script: |
-        set -eux
-        echo "##[group]install ansible-core"
-        pip install https://github.com/ansible/ansible/archive/devel.tar.gz --disable-pip-version-check
-        echo "##[endgroup]"
-
-        # HACK: this sucks
-        echo "write jobdata for wheel builder task: $JOB_DATA"
-        echo $JOB_DATA > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/files/jobdata.json
-        
-        # smuggle vars to test to set script output dir
-        echo "script_outdir: $(pwd)" > collections/ansible_collections/ansible/spare_tire/tests/integration/targets/wheel_builder/vars/main.yml
-        
-        
-        echo "##[group]run ansible-test to start $(instance),arch=$(arch) and generate build script"
-        pushd collections/ansible_collections/ansible/spare_tire/
-        ansible-test integration --target remote:$(instance),arch=$(arch),python=$(python) -vv wheel_builder
-        popd
-        echo "##[endgroup]"
-
-        if [ "$(pythons)" ]; then
-          echo "##[group]run ansible-test to configure additional python versions: $(pythons)"
-          for python in $(pythons); do
-            ansible-test shell --target-posix remote:$(instance),arch=$(arch),python=${python} -v id
-          done
-          echo "##[endgroup]"
-        fi
-
-        # run generated remote build script
-        . ./remote_build.sh
-
-        mkdir -p $(Build.ArtifactStagingDirectory)/dist
-        cp dist/*.whl $(Build.ArtifactStagingDirectory)/dist
-
-        ls -l $(Build.ArtifactStagingDirectory)/dist/*.whl
-      name: build_wheels
-      displayName: Build wheels
-      env:
-        # map AWS secrets in for this step
-        AWS_ACCESS_KEY_ID: $(ACCESS_KEY_ID)
-        AWS_SECRET_ACCESS_KEY: $(SECRET_ACCESS_KEY)
-    - publish: '$(Build.ArtifactStagingDirectory)/dist/'
-      artifact: '$(System.JobAttempt) $(System.StageDisplayName) $(System.JobDisplayName)'
-      name: store_pipeline_artifacts
-      displayName: Store pipeline artifacts
-
 - stage: publish
   displayName: Publish wheels
-  dependsOn: wheel_builds
   jobs:
   - job: upload_to_s3
     displayName: Upload wheels to S3
     steps:
     - bash: sudo snap install aws-cli --classic
       displayName: Install AWS CLI
-    - task: DownloadPipelineArtifact@2
-      displayName: Fetch pipeline artifacts
-      inputs:
-        path: artifact_stage/
-        patterns: '**/*.whl'
     - script: |
         set -eux
         pwd
         
         # FIXME stage-specific requirements file
         python3 -m pip install dumb-pypi
-        
-        ls -lR artifact_stage
-        
-        # assemble all wheel artifacts to a single dir
-        mkdir -p packages
-        mv -v artifact_stage/*/*.whl packages/
-        
-        ls -l packages/
-        
-        # upload packages to S3
-        aws s3 sync packages/ s3://spare-tire-service/packages/
-        
+
         # download the complete list of packages on S3
         aws s3 ls s3://spare-tire-service/packages/ | awk '{print $4}' > packages.txt
         
