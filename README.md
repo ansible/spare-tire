@@ -6,7 +6,7 @@ them to a custom package index.
 
 `wheel_matrix.yml` lists the Python packages/versions, target core-ci instance types, and target Python/abi3 settings.
 The first stage `gen_build_matrix.py` script consumes the wheel matrix and queries the S3 bucket behind the
-PyPI index at https://spare-tire.core.ansible.com/simple. Any packages with version `latest` are resolved against
+PyPI index at https://spare-tire.core.ansible.com/simple/. Any packages with version `latest` are resolved against
 "real" PyPI to get the actual current latest version. It then generates a dynamic Azure Pipelines matrix with one
 matrix node per build worker (all wheels for a given core-ci instance type are built in the same instance and matrix
 entry). If no wheels need to be built, the pipeline short-circuits and ends execution.
