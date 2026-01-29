@@ -88,7 +88,7 @@ class PackageBuildChecker:
     def _build_exists(spec: BuildSpec) -> bool:
         print(f"checking bucket for {spec.filename}")
         s3 = boto3.client('s3')
-        s3_objects = s3.list_objects_v2(Bucket='spare-tire', Prefix=f'packages/{spec.filename}', MaxKeys=1)
+        s3_objects = s3.list_objects_v2(Bucket='spare-tire-service', Prefix=f'packages/{spec.filename}', MaxKeys=1)
         exists = len(s3_objects.get('Contents', [])) > 0
         if not exists:
             print(f"{spec.filename} is not present in bucket")
