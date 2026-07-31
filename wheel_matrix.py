@@ -21,6 +21,7 @@ def main() -> None:
     freebsd_pythons = {
         '14.4': ['3.14'],
         '15.0': ['3.12'],
+        '15.1': ['3.14'],
     }
 
     # The latest version of each package should be included when possible.
