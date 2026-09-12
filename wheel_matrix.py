@@ -19,8 +19,7 @@ class Package:
 
 def main() -> None:
     freebsd_pythons = {
-        '14.4': ['3.14'],
-        '15.0': ['3.12'],
+        '14.5': ['3.14'],
         '15.1': ['3.14'],
     }
 
@@ -32,7 +31,7 @@ def main() -> None:
         Package(name='cffi', versions=['latest']),
         Package(name='coverage', versions=[
             'latest',
-            '7.13.5',  # devel
+            '7.15.4',  # 2.22
             '7.10.7',  # 2.20, 2.21
             '7.6.1',  # 2.19, 2.18
             '7.3.2',  # 2.17
@@ -40,14 +39,14 @@ def main() -> None:
         Package(name='lazy-object-proxy', versions=['latest']),
         Package(name='MarkupSafe', versions=[
             'latest',
-            '3.0.3',  # 2.20, 2.21
+            '3.0.3',  # 2.20, 2.21, 2.22
             '3.0.2',  # 2.19
             '2.1.5',  # 2.18, 2.17
         ]),
         Package(name='PyNaCl', versions=['latest'], abi='abi3'),
         Package(name='PyYAML', versions=[
             'latest',
-            '6.0.3',  # 2.20, 2.21
+            '6.0.3',  # 2.20, 2.21, 2.22
             '6.0.2',  # 2.19, 2.18
             '6.0.1',  # 2.17
         ]),
