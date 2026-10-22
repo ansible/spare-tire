@@ -62,19 +62,8 @@ stages:
       displayName: Configure SSH
     - script: |
         set -eux
-
-        # HACK: Not all Python versions are supported by the devel branch.
-        case "$(python)" in
-          "3.12")
-            branch="stable-2.21"
-            ;;
-          *)
-            branch="devel"
-            ;;
-        esac
-
         echo "##[group]install ansible-core"
-        pip install https://github.com/ansible/ansible/archive/${branch}.tar.gz --disable-pip-version-check
+        pip install https://github.com/ansible/ansible/archive/devel.tar.gz --disable-pip-version-check
         echo "##[endgroup]"
 
         # HACK: this sucks
